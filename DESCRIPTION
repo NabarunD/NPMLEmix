@@ -4,8 +4,7 @@ Title: CALCULATES EXPONENTS AND LOGISTIC FUNCTION
 Version: 0.1.0
 Author: Nabarun Deb
 Maintainer: Nabarun Deb <nd2560@columbia.edu>
-Description: This package evaluates exponents.
-    It also evaluates the value of the logistic function in one dimension.
+Description: This package evaluates exponents and logistic functions.
 Depends: R(>= 3.0.1)
 License: MIT
 Encoding: UTF-8
