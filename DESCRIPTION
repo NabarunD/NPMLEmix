@@ -4,14 +4,8 @@ Title: NONPARAME10RIC MLE FOR MIXTURE DISTRIBUTIONS
 Version: 1.1.1
 Date: 2018-11-24
 Depends: R (>= 3.0.1)
-Author: Nabarun Deb <nd2560@columbia.edu>
-        Sujayam Saha <sujayam@berkeley.edu>
-        Adityanand Guntuboyina <aditya@stat.berkeley.edu>
-        Bodhisattva Sen <bodhi@stat.columbia.edu>
-Maintainer: Nabarun Deb <nd2560@columbia.edu>
-            Sujayam Saha <sujayam@berkeley.edu>
-            Adityanand Guntuboyina <aditya@stat.berkeley.edu>
-            Bodhisattva Sen <bodhi@stat.columbia.edu>
+Author: Nabarun Deb <nd2560@columbia.edu> Sujayam Saha <sujayam@berkeley.edu> Adityanand Guntuboyina <aditya@stat.berkeley.edu> Bodhisattva Sen <bodhi@stat.columbia.edu>
+Maintainer: Nabarun Deb <nd2560@columbia.edu> Sujayam Saha <sujayam@berkeley.edu> Adityanand Guntuboyina <aditya@stat.berkeley.edu> Bodhisattva Sen <bodhi@stat.columbia.edu>
 Description: Nonparametric maximum likelihood estimation in mixture models when the signal distribution is an infinite Gaussian location mixture and the signal proportion is a logistic function of the available covariate information. Other methods based on marginal likelihoods for inference in the framework of the multiple hypotheses testing problem. For a more detailed exposition, see corresponding paper: "Two-component Mixture Model in the Presence of Covariates." Nabarun Deb, Sujayam Saha, Adityanand Guntuboyina, Bodhisattva Sen. It is MANDATORY to have a moseK license in order to use this package.
 License: GPL-2
 Encoding: UTF-8
