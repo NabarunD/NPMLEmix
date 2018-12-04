@@ -15,10 +15,11 @@ require(progress, quietly = TRUE)
 require(pbapply, quietly = TRUE)
 require(Hmisc, quietly = TRUE)
 
-source('C:/Users/Nabarun Deb/Dropbox/CovariateTesting/Code/Code_Dump_May_2018/source/opt_routines.R')
-source('C:/Users/Nabarun Deb/Dropbox/CovariateTesting/Code/Code_Dump_May_2018/source/utilities.R')
-source('C:/Users/Nabarun Deb/Dropbox/CovariateTesting/Code/Code_Dump_May_2018/source/my_list.R')
-source('C:/Users/Nabarun Deb/Dropbox/CovariateTesting/Code/Code_Dump_May_2018/source/marginal_methods.R')
+#### Add the correct source reference here ####
+source('~/source/opt_routines.R')
+source('~/source/utilities.R')
+source('~/source/my_list.R')
+source('~/source/marginal_methods.R')
 LIMIT_THREAD = TRUE
 
 niter = 1
