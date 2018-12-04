@@ -198,6 +198,7 @@ t1=rnorMix(sam,norMix(mu=em1_$atoms,sigma=rep(1,length(em1_$atoms)),w=em1_$probs
 t2=rnorMix(sam,norMix(mu=em2_$atoms,sigma=rep(1,length(em2_$atoms)),w=em2_$probs))
 t3=rnorMix(sam,norMix(mu=em3_$atoms,sigma=rep(1,length(em3_$atoms)),w=em3_$probs))
 
+#### Obtaining the box-plots ####
 x <- data.frame(v1=t1,v2=t2,v3=t3)
 library(ggplot2);library(reshape2)
 data<- melt(x)
