@@ -32,17 +32,17 @@ This function returns a list consisting of the following:
 
 \item{ll}{The log-likelihood evaluated at the estimated optima.}
 
-\item{rejset}{The vector of \eqn{1's} and \eqn{0's} where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
+\item{rejset}{The vector of \eqn{1}s and \eqn{0}s where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
 
 \item{pi0}{The average of the entries of the vector \emph{p}.}
 
 \item{ll_list}{The vector of profile log-likelihoods corresponding to a pre-determined set of grid points for \eqn{\bar\pi}. The highest element of this vector is the output in \emph{ll}.}
 }
 \description{
-This function estimates the signal proportion and the signal density by starting from
-the marginal distribution of \eqn{Y} and followed by a profile likelihood based approach.
+This function estimates the signal proportion and the signal density by using
+the marginal distribution of \eqn{Y}, followed by a profile likelihood based approach.
 It returns the vector of estimated local false discovery rates and the corresponding
-rejection set at a pre-specified level for the false discovery rate.
+rejection set at a prespecified level for the false discovery rate.
 }
 \details{
 Note that the marginal distribution of \eqn{Y} based on the aforementioned model
@@ -52,7 +52,7 @@ estimated using the Rmosek optimization suite. The primary idea is to approximat
 the mixing distribution \eqn{G(\cdot)} using \eqn{\max\{100,\sqrt{n}\}} many
 components, each having a suitable Gaussian distribution. The signal proportion
 is then estimated
-using the BFGS algorithm. Fimally, the algorithm chooses the best value of \eqn{\bar\pi} based
+using the BFGS algorithm. Finally, the algorithm chooses the best value of \eqn{\bar\pi} based
 on a profile likelihood approach.
 }
 \examples{

@@ -32,17 +32,17 @@ This function returns a list consisting of the following:
 
 \item{ll}{The log-likelihood evaluated at the estimated optima.}
 
-\item{rejset}{The vector of \eqn{1's} and \eqn{0's} where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
+\item{rejset}{The vector of \eqn{1}s and \eqn{0}s where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
 
 \item{den}{The vector of estimated conditional densities evaluated at the data points.}
 
 \item{localfdr}{The vector of estimated local false discovery rates evaluated at the data points.}
 }
 \description{
-This function estimates the signal proportion and the signal density by starting from
-the full likelihood of the sample and followed by an EM algorithm based approach.
+This function estimates the signal proportion and the signal density by using
+the full likelihood of the sample, followed by an EM algorithm based approach.
 It returns the vector of estimated local false discovery rates and the corresponding
-rejection set at a pre-specified level for the false discovery rate.
+rejection set at a prespecified level for the false discovery rate.
 }
 \details{
 The key observation in the full likelihood approach is that the M-step of

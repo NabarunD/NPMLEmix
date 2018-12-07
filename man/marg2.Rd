@@ -32,24 +32,24 @@ This function returns a list consisting of the following:
 
 \item{ll}{The log-likelihood evaluated at the estimated optima.}
 
-\item{rejset}{The vector of \eqn{1's} and \eqn{0's} where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
+\item{rejset}{The vector of \eqn{1}s and \eqn{0}s where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
 
 \item{pi0}{The average of the entries of the vector \emph{p}.}
 
 \item{ll_list}{The vector of profile log-likelihoods corresponding to a pre-determined set of grid points for \eqn{\mu^*}. The highest element of this vector is the output in \emph{ll}.}
 }
 \description{
-This function estimates the signal proportion and the signal density by starting from
-the conditional mean \eqn{Y|X=x} and followed by a non-linear least squares regression based approach.
+This function estimates the signal proportion and the signal density by using
+the conditional mean \eqn{Y|X=x}, followed by a non-linear least squares regression based approach.
 It returns the vector of estimated local false discovery rates and the corresponding
-rejection set at a pre-specified level for the false discovery rate.
+rejection set at a prespecified level for the false discovery rate.
 }
 \details{
 Note that the conditional mean of \eqn{Y|X} based on the aforementioned model
 is a non-linear function of the parameters, i.e., the logistic coefficients
 and the mean of the marginal distribution of \eqn{Y}, \eqn{\mu^* = \mathbf{E}[Y]}.
 This is a non-convex optimization problem in the parameters and is solved by varying
-\eqn{\mu^*} over a pre-determined grid, and optimizing over the logistic coefficients.
+\eqn{\mu^*} over a predetermined grid, and optimizing over the logistic coefficients.
 This is the estimate of \eqn{\pi^*(\cdot)} from the marg2() method. The estimate of
 \eqn{\phi_1(\cdot)} is obtained as in the marg1() method by using the Rmosek optimization
 suite, and the same discrete approximation to the mixing distribution \eqn{G(\cdot)}.

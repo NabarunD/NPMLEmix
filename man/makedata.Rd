@@ -26,8 +26,6 @@ The output is a list with the following entries:
 
 \item{x}{The input data matrix.}
 
-\item{xs}{The data matrix after the columnwise basis spline expansion. Same as x if df=0.}
-
 \item{pix}{The vector of signal proportions.}
 
 \item{f0y}{The vector of standard Gaussian densities evaluated at simulated z-scores.}
@@ -50,11 +48,10 @@ false discovery rates which determine the optimal multiple testing procedure.
 \details{
 Given \eqn{X=x}, a Bernoulli\eqn{(\pi^*(x))} sample is drawn. If the outcome is
 1 (0), a z-score is drawn from \eqn{\phi_1(\cdot)} \eqn{(\phi(\cdot))}. All the observations
-corresponding to a Bernoulli outcome 1 (0) is termed as \emph{non-null observations}
+corresponding to a Bernoulli outcome 1 (0) are termed as \emph{non-null observations}
 (\emph{null observations}).\cr
-The length of sx should be 1 more than the number of columns of the data matrix x (if df = ,
-or the transformed data matrix after a basis spline expansion.\cr
-The vectors atoms, probs and variances must have the same length.
+The length of sx should be 1 more than the number of columns of the data matrix x.\cr
+The vectors - atoms, probs and variances must have the same length.
 }
 \examples{
 require(NPMLEmix)

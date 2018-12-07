@@ -9,26 +9,25 @@ The NPMLEmix-package fits nonparametric Gaussian location mixture models for
 z-scores arising out of several hypotheses, while taking into account any
 available covariate information. It also provides three important functions:
 marg1(), marg2() (both based on marginal likelihoods), npmleEM() (based on
-complete data likelihood) for inference in multiple testing using local
-false discovery rates.
+joint data likelihood) for inference in multiple testing.
 }
 \details{
-Likelihoods (marginal or conditional) are computed based on the model
+\eqn{(Y_1,X_1),\ldots ,(X_n,Y_n)} are i.i.d. samples drawn from the model,
 \deqn{Y|X=x\sim (1-\pi^*(x))\phi(y)+\pi^*(x)\underbrace{\int_{\theta}\phi(y-\theta)\,dG(\theta)}_{\phi_1(y)}, \qquad X\sim m_X(\cdot)}
-where \eqn{\phi^*(\cdot)} represents the logistic link function, \eqn{\phi(\cdot)} is
+where \eqn{\pi^*(\cdot)} represents the logistic link function, \eqn{\phi(\cdot)} is
 the standard Gaussian density and \eqn{G(\cdot)} is some unknown probability measure on
 the real line. Usually, \eqn{\pi^*(\cdot)} is referred to as the \emph{signal proportion},
 \eqn{\phi_1(\cdot)} is called the \emph{signal density} and \eqn{G(\cdot)} is called \emph{mixing distribution}.
 The \eqn{i^{th}} local false discovery rate is then defined as
 \deqn{lfdr_i=\frac{(1-\pi^*(X_i))\phi_0(Y_i)}{(1-\pi^*(X_i))\phi_0(Y_i)+\pi^*(X_i)\phi_1(Y_i)}}
 All the principal functions estimate the unknown parameters - \eqn{\pi^*(\cdot)} and
-\eqn{\phi_1(\cdot)}, and consequently the \eqn{lfdr_i's}.
+\eqn{\phi_1(\cdot)}, and consequently the \eqn{lfdr_i}'s.
 The optimization algorithms use quasi-Newton routines such as the BFGS (Broyden-Fletcher-Goldfarb-Shanno)
 algorithm and the separable convex optimization routine available in the Rmosek
 optimization suite.
-The principal functions accept a vector of z-scores \eqn{(Y's)} and a covariate matrix X
+The principal functions accept a vector of z-scores (\eqn{Y})'s and a covariate matrix X
 in their list of arguments. Read the documentations for each function to
-check whether or not to add a column of \eqn{1's} to X matrix.
+check whether or not to add a column of \eqn{1}'s to X matrix.
 }
 \section{Functions}{
 
