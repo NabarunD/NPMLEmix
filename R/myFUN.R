@@ -1,7 +1,7 @@
 #' @importClassesFrom Matrix CsparseMatrix
-#' @importFrom methods as
-#' @importFrom grDevices col2rgb rgb
-#' @importFrom stats dnorm lm optim quantile rnorm runif sd
+### #' @importFrom methods as
+### #' @importFrom grDevices col2rgb rgb
+### #' @importFrom stats dnorm lm optim quantile rnorm runif sd
 NULL
 ########### Packages required #############################
 #' Likelihood based inference in mixture models and multiple hypotheses testing
@@ -10,28 +10,27 @@ NULL
 #' z-scores arising out of several hypotheses, while taking into account any
 #' available covariate information. It also provides three important functions:
 #' marg1(), marg2() (both based on marginal likelihoods), npmleEM() (based on
-#' complete data likelihood) for inference in multiple testing using local
-#' false discovery rates.
+#' joint data likelihood) for inference in multiple testing.
 #'
 #' @section Functions:
 #' The principal functions in the NPMLEmix-package: marg1(), marg2(), npmleEM().
 #'
-#' @details Likelihoods (marginal or conditional) are computed based on the model
+#' @details \eqn{(Y_1,X_1),\ldots ,(X_n,Y_n)} are i.i.d. samples drawn from the model,
 #' \deqn{Y|X=x\sim (1-\pi^*(x))\phi(y)+\pi^*(x)\underbrace{\int_{\theta}\phi(y-\theta)\,dG(\theta)}_{\phi_1(y)}, \qquad X\sim m_X(\cdot)}
-#' where \eqn{\phi^*(\cdot)} represents the logistic link function, \eqn{\phi(\cdot)} is
+#' where \eqn{\pi^*(\cdot)} represents the logistic link function, \eqn{\phi(\cdot)} is
 #' the standard Gaussian density and \eqn{G(\cdot)} is some unknown probability measure on
 #' the real line. Usually, \eqn{\pi^*(\cdot)} is referred to as the \emph{signal proportion},
 #' \eqn{\phi_1(\cdot)} is called the \emph{signal density} and \eqn{G(\cdot)} is called \emph{mixing distribution}.
 #' The \eqn{i^{th}} local false discovery rate is then defined as
 #' \deqn{lfdr_i=\frac{(1-\pi^*(X_i))\phi_0(Y_i)}{(1-\pi^*(X_i))\phi_0(Y_i)+\pi^*(X_i)\phi_1(Y_i)}}
 #' All the principal functions estimate the unknown parameters - \eqn{\pi^*(\cdot)} and
-#' \eqn{\phi_1(\cdot)}, and consequently the \eqn{lfdr_i's}.
+#' \eqn{\phi_1(\cdot)}, and consequently the \eqn{lfdr_i}'s.
 #' The optimization algorithms use quasi-Newton routines such as the BFGS (Broyden-Fletcher-Goldfarb-Shanno)
 #' algorithm and the separable convex optimization routine available in the Rmosek
 #' optimization suite.
-#' The principal functions accept a vector of z-scores \eqn{(Y's)} and a covariate matrix X
+#' The principal functions accept a vector of z-scores (\eqn{Y})'s and a covariate matrix X
 #' in their list of arguments. Read the documentations for each function to
-#' check whether or not to add a column of \eqn{1's} to X matrix.
+#' check whether or not to add a column of \eqn{1}'s to X matrix.
 #'
 #' @references Deb, N., Saha, S., Guntuboyina, A. and Sen, B., 2018. Two-component Mixture Model in the Presence of Covariates. arXiv preprint arXiv:1810.07897.
 #' @references Scott, J.G., Kelly, R.C., Smith, M.A., Zhou, P. and Kass, R.E., 2015. False discovery rate regression: an application to neural synchrony detection in primary visual cortex. Journal of the American Statistical Association, 110(510), pp.459-471.
@@ -164,15 +163,13 @@ evnnprop=function(beta, xx){
 #' @param variances The vector of variances for each component of the mixing distribution. Requires compatibility with atoms and probs. See \strong{Details}.
 #' @details Given \eqn{X=x}, a Bernoulli\eqn{(\pi^*(x))} sample is drawn. If the outcome is
 #' 1 (0), a z-score is drawn from \eqn{\phi_1(\cdot)} \eqn{(\phi(\cdot))}. All the observations
-#' corresponding to a Bernoulli outcome 1 (0) is termed as \emph{non-null observations}
+#' corresponding to a Bernoulli outcome 1 (0) are termed as \emph{non-null observations}
 #' (\emph{null observations}).\cr
-#' The length of sx should be 1 more than the number of columns of the data matrix x (if df = ,
-#' or the transformed data matrix after a basis spline expansion.\cr
-#' The vectors atoms, probs and variances must have the same length.
+#' The length of sx should be 1 more than the number of columns of the data matrix x.\cr
+#' The vectors - atoms, probs and variances must have the same length.
 #' @return The output is a list with the following entries:
 #' @return \item{y}{The vector of simulated z-scores.}
 #' @return \item{x}{The input data matrix.}
-#' @return \item{xs}{The data matrix after the columnwise basis spline expansion. Same as x if df=0.}
 #' @return \item{pix}{The vector of signal proportions.}
 #' @return \item{f0y}{The vector of standard Gaussian densities evaluated at simulated z-scores.}
 #' @return \item{f1y}{The vector of signal densities evaluated at simulated z-scores.}
@@ -440,10 +437,10 @@ lregoptim = function(f0y, f1y, x, binit, lambda = 1e-2/length(f0y)){
 
 #' Implements a profile likelihood based algorithm for estimating signal proportion and density
 #'
-#' This function estimates the signal proportion and the signal density by starting from
-#' the marginal distribution of \eqn{Y} and followed by a profile likelihood based approach.
+#' This function estimates the signal proportion and the signal density by using
+#' the marginal distribution of \eqn{Y}, followed by a profile likelihood based approach.
 #' It returns the vector of estimated local false discovery rates and the corresponding
-#' rejection set at a pre-specified level for the false discovery rate.
+#' rejection set at a prespecified level for the false discovery rate.
 #' @param y The observed vector of z-scores.
 #' @param x The \eqn{n\times p} data matrix, where \eqn{n} must be equal to thelength of y. If you are interested in the intercept, you must add a column of \eqn{1's} to \eqn{x}.
 #' @param blambda The tolerance threshold while implementing a quasi-Newton approach for estimating the signal proportion. Default is set to \eqn{1e-6/}length(y). We recommend not changing it unless absolutely sure.
@@ -455,7 +452,7 @@ lregoptim = function(f0y, f1y, x, binit, lambda = 1e-2/length(f0y)){
 #' the mixing distribution \eqn{G(\cdot)} using \eqn{\max\{100,\sqrt{n}\}} many
 #' components, each having a suitable Gaussian distribution. The signal proportion
 #' is then estimated
-#' using the BFGS algorithm. Fimally, the algorithm chooses the best value of \eqn{\bar\pi} based
+#' using the BFGS algorithm. Finally, the algorithm chooses the best value of \eqn{\bar\pi} based
 #' on a profile likelihood approach.
 #' @return This function returns a list consisting of the following:
 #' @return \item{p}{The estimated prior probabilities, i.e., \eqn{\hat\pi(\cdot)} evaluated at the data points.}
@@ -465,7 +462,7 @@ lregoptim = function(f0y, f1y, x, binit, lambda = 1e-2/length(f0y)){
 #' @return \item{localfdr}{The vector of estimated local false discovery rates evaluated at the data points.}
 #' @return \item{den}{The vector of estimated conditional densities evaluated at the data points.}
 #' @return \item{ll}{The log-likelihood evaluated at the estimated optima.}
-#' @return \item{rejset}{The vector of \eqn{1's} and \eqn{0's} where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
+#' @return \item{rejset}{The vector of \eqn{1}s and \eqn{0}s where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
 #' @return \item{pi0}{The average of the entries of the vector \emph{p}.}
 #' @return \item{ll_list}{The vector of profile log-likelihoods corresponding to a pre-determined set of grid points for \eqn{\bar\pi}. The highest element of this vector is the output in \emph{ll}.}
 #' @references Deb, N., Saha, S., Guntuboyina, A. and Sen, B., 2018. Two-component Mixture Model in the Presence of Covariates. arXiv preprint arXiv:1810.07897.
@@ -603,10 +600,10 @@ lgem = function(y, x,
 
 #' Implements a non-linear least squares based algorithm for estimating signal proportion and density
 #'
-#' This function estimates the signal proportion and the signal density by starting from
-#' the conditional mean \eqn{Y|X=x} and followed by a non-linear least squares regression based approach.
+#' This function estimates the signal proportion and the signal density by using
+#' the conditional mean \eqn{Y|X=x}, followed by a non-linear least squares regression based approach.
 #' It returns the vector of estimated local false discovery rates and the corresponding
-#' rejection set at a pre-specified level for the false discovery rate.
+#' rejection set at a prespecified level for the false discovery rate.
 #' @param y The observed vector of z-scores.
 #' @param x The \eqn{n\times p} data matrix, where \eqn{n} must be equal to thelength of y. If you are interested in the intercept, you must add a column of \eqn{1's} to \eqn{x}.
 #' @param nlslambda The tolerance threshold while implementing a quasi-Newton approach for the non-linear least squares problem. Default is set to \eqn{1e-6/}length(y). We recommend not changing it unless absolutely sure.
@@ -615,7 +612,7 @@ lgem = function(y, x,
 #' is a non-linear function of the parameters, i.e., the logistic coefficients
 #' and the mean of the marginal distribution of \eqn{Y}, \eqn{\mu^* = \mathbf{E}[Y]}.
 #' This is a non-convex optimization problem in the parameters and is solved by varying
-#' \eqn{\mu^*} over a pre-determined grid, and optimizing over the logistic coefficients.
+#' \eqn{\mu^*} over a predetermined grid, and optimizing over the logistic coefficients.
 #' This is the estimate of \eqn{\pi^*(\cdot)} from the marg2() method. The estimate of
 #' \eqn{\phi_1(\cdot)} is obtained as in the marg1() method by using the Rmosek optimization
 #' suite, and the same discrete approximation to the mixing distribution \eqn{G(\cdot)}.
@@ -627,7 +624,7 @@ lgem = function(y, x,
 #' @return \item{localfdr}{The vector of estimated local false discovery rates evaluated at the data points.}
 #' @return \item{den}{The vector of estimated conditional densities evaluated at the data points.}
 #' @return \item{ll}{The log-likelihood evaluated at the estimated optima.}
-#' @return \item{rejset}{The vector of \eqn{1's} and \eqn{0's} where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
+#' @return \item{rejset}{The vector of \eqn{1}s and \eqn{0}s where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
 #' @return \item{pi0}{The average of the entries of the vector \emph{p}.}
 #' @return \item{ll_list}{The vector of profile log-likelihoods corresponding to a pre-determined set of grid points for \eqn{\mu^*}. The highest element of this vector is the output in \emph{ll}.}
 #' @references Deb, N., Saha, S., Guntuboyina, A. and Sen, B., 2018. Two-component Mixture Model in the Presence of Covariates. arXiv preprint arXiv:1810.07897.
@@ -786,10 +783,10 @@ extract_init = function(obj){
 
 #' Implements the full likelihood approach based on the EM algorithm for estimating signal proportion and density
 #'
-#' This function estimates the signal proportion and the signal density by starting from
-#' the full likelihood of the sample and followed by an EM algorithm based approach.
+#' This function estimates the signal proportion and the signal density by using
+#' the full likelihood of the sample, followed by an EM algorithm based approach.
 #' It returns the vector of estimated local false discovery rates and the corresponding
-#' rejection set at a pre-specified level for the false discovery rate.
+#' rejection set at a prespecified level for the false discovery rate.
 #' @param y The observed vector of z-scores.
 #' @param x The \eqn{n\times p} data matrix, where \eqn{n} mist be equal to thelength of y. If you are interested in the intercept, you must add a column of \eqn{1's} to \eqn{x}.
 #' @param level The level at which the false discovery rate is to be controlled. Should be a scalar in \eqn{[0,1]}. Default set to \eqn{0.05}.
@@ -809,7 +806,7 @@ extract_init = function(obj){
 #' @return \item{b}{The estimates for the coefficient vector in the logistic function.}
 #' @return \item{p}{The estimated prior probabilities, i.e., \eqn{\hat\pi(\cdot)} evaluated at the data points.}
 #' @return \item{ll}{The log-likelihood evaluated at the estimated optima.}
-#' @return \item{rejset}{The vector of \eqn{1's} and \eqn{0's} where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
+#' @return \item{rejset}{The vector of \eqn{1}s and \eqn{0}s where \eqn{1} indicates that the corresponding hypothesis is to be rejected.}
 #' @return \item{den}{The vector of estimated conditional densities evaluated at the data points.}
 #' @return \item{localfdr}{The vector of estimated local false discovery rates evaluated at the data points.}
 #' @references Deb, N., Saha, S., Guntuboyina, A. and Sen, B., 2018. Two-component Mixture Model in the Presence of Covariates. arXiv preprint arXiv:1810.07897.
