@@ -12,5 +12,5 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0.9000
 URL: https://github.com/NabarunD/NPMLEmix
-Imports: R.utils, dplyr, spatstat, methods, latexpdf, Matrix, FDRreg, Rcpp, REBayes, CAMAN, progress, pbapply, Hmisc, pracma, mosaic
+Imports: R.utils, dplyr, spatstat, methods, latexpdf, Matrix, FDRreg, Rcpp, CAMAN, progress, pbapply, Hmisc, pracma, mosaic
 
