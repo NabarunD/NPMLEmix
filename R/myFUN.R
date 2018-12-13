@@ -1,20 +1,20 @@
 #' @importClassesFrom Matrix CsparseMatrix
 #' @import methods
-#' @import Rmosek
+### #' @import Rmosek
 #' @import dplyr
 #' @import FDRreg
 #' @import R.utils
-#' @import spatstat
-#' @import latexpdf
-#' @import Matrix
+### #' @import spatstat
+### #' @import latexpdf
+### #' @import Matrix
 #' @import Rcpp
 #' @import REBayes
-#' @import CAMAN
+### #' @import CAMAN
 #' @import progress
 #' @import pbapply
-#' @import Hmisc
+### #' @import Hmisc
 #' @import pracma
-#' @import mosaic
+### #' @import mosaic
 ### #' @importFrom methods as
 ### #' @importFrom grDevices col2rgb rgb
 ### #' @importFrom stats dnorm lm optim quantile rnorm runif sd
