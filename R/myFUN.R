@@ -8,7 +8,7 @@
 ### #' @import latexpdf
 ### #' @import Matrix
 #' @import Rcpp
-### #' @import REBayes
+#' @import REBayes
 ### #' @import CAMAN
 #' @import progress
 #' @import pbapply
