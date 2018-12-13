@@ -1,7 +1,24 @@
 #' @importClassesFrom Matrix CsparseMatrix
+#' @import methods
+#' @import Rmosek
+#' @import dplyr
+#' @import FDRreg
+#' @import R.utils
+#' @import spatstat
+#' @import latexpdf
+#' @import Matrix
+#' @import Rcpp
+#' @import REBayes
+#' @import CAMAN
+#' @import progress
+#' @import pbapply
+#' @import Hmisc
+#' @import pracma
+#' @import mosaic
 ### #' @importFrom methods as
 ### #' @importFrom grDevices col2rgb rgb
 ### #' @importFrom stats dnorm lm optim quantile rnorm runif sd
+
 NULL
 ########### Packages required #############################
 #' Likelihood based inference in mixture models and multiple hypotheses testing
