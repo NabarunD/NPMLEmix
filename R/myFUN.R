@@ -883,7 +883,7 @@ npmleEM <- function(y, x, level = 0.05, initp = 1){
 newmarg1 = function(y, x, blambda = 1e-6/length(y), level = 0.05){
   # x=cbind(1, datax)
   mt = abs(y) - mean(abs(rnorm(1e4)));
-  #pi0grid = seq(from = 0.01, to = 0.49, by = 0.01);
+  pi0grid = seq(from = 0.01, to = 0.49, by = 0.01);
   verbose=FALSE;
   grid_len = max(100, round(sqrt(length(y))));
   n = length(y); f0y = dnorm(y);
