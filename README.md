@@ -11,4 +11,4 @@
 #
 # Before using the package NPMLEmix, it is recommended to go through the manual.pdf file. Note that, in order to
 # use this package, you must have a Mosek license and a working version of the package Rmosek installed. To install 
-# the NPMLEmix package, first install and load devtools - then use devtools::install_github("NabarunD/NPMLEmix").
+# the NPMLEmix package, first install and load devtools - then use devtools::install_github("NabarunD/NPMLEmix",INSTALL_opts = '--no-lock').
