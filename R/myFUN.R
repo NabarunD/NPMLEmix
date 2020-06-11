@@ -13,7 +13,7 @@
 #' @import progress
 #' @import pbapply
 ### #' @import Hmisc
-#' @import pracma
+### #' @import pracma
 ### #' @import mosaic
 ### #' @importFrom methods as
 ### #' @importFrom grDevices col2rgb rgb
