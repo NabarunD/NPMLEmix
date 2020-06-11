@@ -319,17 +319,18 @@ histbin <- function(x, m = histm, eps = 1e-06, weights = weights) {
 
 # let's try implementing primal formulation of kw in mosek
 # this can be used to solve both the weighted and pi-constrained problems
+
 kwprimal = function(y, pivec = 1, weights = 1, grid_len = 100){
   LIMIT_THREAD = TRUE
   m = grid_len
   n = length(y)
-
+  
   # if (length(pivec) == 1) pivec = rep(pivec, n)
   # if (length(weights) == 1) pivec = rep(weights, n)
-
+  
   atoms = seq(from = min(y), to = max(y), length.out = m)
   fmat = dnorm(outer(y, atoms, "-"))
-
+  
   # setting up problem
   # want to maximize so sense = max
   # the variables which need to be optimized are (p_j, v_i)
@@ -337,22 +338,22 @@ kwprimal = function(y, pivec = 1, weights = 1, grid_len = 100){
   # the problem is stated by mosek in the form:
   # sum of non-linear functions separable in arguments + linear part (c^T\pi)
   # for us there is no linear part so c = 0
-  moseko$c = rep(0, m + n)
+  moseko$c = c(rep(0, m + n),weights)
   # monotone constraints in pi
-  A = rbind(cbind(fmat, -diag(n)), c(rep(c(1,0), times = c(m,n))))
+  A = rbind(cbind(fmat, -diag(1/pivec), matrix(0,n,n)), c(rep(c(1,0), times = c(m,2*n))))
   # sparsify to increase speed
   moseko$A = as(A, "CsparseMatrix")
   # moseko$A = Matrix(A, sparse = TRUE)
   # matrix of two rows
   # first row (blc) is lower bound on each linear relationship defined by A
   # second row (blu) is upper bound on each linear relationship defined by A
-  moseko$bc = rbind(blc = c(rep(0, n), 1), buc = c(rep(0, n), 1))
+  moseko$bc = rbind(c((((pivec-1) * dnorm(y))/(pivec)), 1), c((((pivec-1) * dnorm(y))/(pivec)), 1))
   # box constraints: individual constraints on each pi_i
   # it seems to be easier to specify these separately
   # similar to above
   # first row (bxl) is lower bound on each pi_i
   # second row (bxu) is upper bound on each pi_i
-  moseko$bx = rbind(blx = rep(0, m + n), bux = c(rep(1, m), rep(Inf, n)))
+  moseko$bx = rbind(c(rep(0, m + n), rep(-Inf, n)), c(rep(1, m), rep(Inf, 2*n)))
   # this is the interesting part, specifies the non-linear function in the objective
   # the function needs to separable in pi_i,
   # \sum_k f_k phi_k( g_k \pi_{j_k} + h_k)
@@ -362,25 +363,31 @@ kwprimal = function(y, pivec = 1, weights = 1, grid_len = 100){
   # the non-linearity is determined by 'type' (written as phi above)
   # you can multiply phi_k by some constant: f_k
   # also phi_k can be evaluated at a linear function of the variable in question: (g_k, h_k)
-  opro = matrix(list(), nrow = 5, ncol = n)
-  rownames(opro) = c("type", "j", "f", "g", "h")
-  opro[1, ] = rep("LOG", n)
-  opro[2, ] = m + 1:n
-  opro[3, ] = weights # coefficients outside log, in this case all 1
-  opro[4, ] = pivec # coefficient of v_i inside log
-  opro[5, ] = (1-pivec) * dnorm(y) #constants inside log
-  moseko$scopt = list(opro = opro)
-  if(LIMIT_THREAD) {moseko$iparam$num_threads <- 1}
-
-
-  ans <- mosek(moseko, opts = list(verbose = 1))
-
+  #opro = matrix(list(), nrow = 5, ncol = n)
+  #rownames(opro) = c("type", "j", "f", "g", "h")
+  #opro[1, ] = rep("LOG", n)
+  #opro[2, ] = m + 1:n
+  #opro[3, ] = weights # coefficients outside log, in this case all 1
+  #opro[4, ] = pivec # coefficient of v_i inside log
+  #opro[5, ] = (1-pivec) * dnorm(y) #constants inside log
+  #moseko$scopt = list(opro = opro)
+  #if(LIMIT_THREAD) {moseko$iparam$num_threads <- 1}
+  FE <- sparseMatrix(i=c(seq(1,3*n,3),seq(3,3*n,3)),j=c(((m+1):(m+n)),((m+n+1):(m+2*n))),x=rep(1,2*n),dims=c(3*n,m+2*n))
+  gE <- rep(c(0, 1, 0), n)
+  
+  # Assemble input data
+  moseko$F <- FE
+  moseko$g <- gE
+  moseko$cones <- cbind(matrix(list("PEXP", 3), nrow=2, ncol=n))
+  rownames(moseko$cones) <- c("type","dim")
+  
+  ans <- mosek(moseko)
+  
   probs = ans$sol$itr$xx[1:m]
-  f1y = ans$sol$itr$xx[m + 1:n]
-
+  f1y = (ans$sol$itr$xx[m + 1:n]-(1-pivec)*dnorm(y))/(pivec)
+   
   return(list(atoms = atoms, probs = probs, f1y = f1y, ll = mean(log(f1y))))
 }
-
 # kwprimal using weights and histogram
 kwprimal_weights = function(y, weights = 1, num_atoms = 100, hist_flag = TRUE, num_hist = num_atoms){
 
