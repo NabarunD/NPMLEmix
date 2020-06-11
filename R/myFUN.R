@@ -6,7 +6,7 @@
 #' @import R.utils
 ### #' @import spatstat
 ### #' @import latexpdf
-### #' @import Matrix
+#' @import Matrix
 #' @import Rcpp
 #' @import REBayes
 ### #' @import CAMAN
