@@ -17,7 +17,7 @@ histbin <- function(x, m = histm, eps = 1e-06, weights = weights) {
 # let's try implementing primal formulation of kw in mosek
 # this can be used to solve both the weighted and pi-constrained problems
 
-kwprimal = function(y, pivec = 1, weights = 1, grid_len = 100){
+kwprimal = function(y, pivec = rep(1,length(y)), weights = rep(1,length(y)), grid_len = 100){
   LIMIT_THREAD = TRUE
   m = grid_len
   n = length(y)
