@@ -296,7 +296,7 @@ make_density = function(atoms,probs,variances){
 reject_set = function(locfdr, level){
   asclfdr = sort(locfdr)
   cumlfdr=cummean(asclfdr)
-  ind=max(which(cumlfdr <= level))
+  ind=max(which(cumlfdr <= level),1)
   rejvec=as.numeric(locfdr <= asclfdr[ind])
   return(rejvec)
 }
@@ -511,7 +511,7 @@ marg1 = function(y, x, blambda = 1e-6/length(y), level = 0.05){
   mt = abs(y) - mean(abs(rnorm(1e4)));
   pi0grid = seq(from = 0.01, to = 0.49, by = 0.01);
   verbose=FALSE;
-  grid_len = max(100, round(sqrt(length(y))));
+  grid_len = max(50, round(sqrt(length(y))));
   n = length(y); f0y = dnorm(y);
   kwm = kwprimal_weights(y, num_atoms = grid_len);
   fmy = kwm$f1y;
@@ -567,7 +567,7 @@ lregem = function(weights, x, binit, lambda = 1e-2/length(weights)){
 # EM
 lgem = function(y, x,
                 weights, binit,
-                grid_len = 3*max(100, round(sqrt(length(y)))), histFlag = TRUE, timed = 60,
+                grid_len = 3*max(50, round(sqrt(length(y)))), histFlag = TRUE, timed = 60,
                 maxit = 600, tol = 1e-6,
                 blambda = 1e-6/length(y), level){
 
@@ -909,7 +909,7 @@ newmarg1 = function(y, x, blambda = 1e-6/length(y), level = 0.05){
   mt = abs(y) - mean(abs(rnorm(1e4)));
   pi0grid = seq(from = 0.01, to = 0.49, by = 0.01);
   verbose=FALSE;
-  grid_len = max(100, round(sqrt(length(y))));
+  grid_len = max(50, round(sqrt(length(y))));
   n = length(y); f0y = dnorm(y);
   kwm = kwprimal_weights(y, num_atoms = grid_len);
   fmy = kwm$f1y;
