@@ -384,7 +384,7 @@ kwprimal = function(y, pivec = rep(1,length(y)), weights = rep(1,length(y)), gri
   ans <- mosek(moseko)
   
   probs = ans$sol$itr$xx[1:m]
-  f1y = (ans$sol$itr$xx[m + 1:n]-(1-pivec)*dnorm(y))/(pivec)
+  f1y = (ans$sol$itr$xx[(m + 1):n]-(1-pivec)*dnorm(y))/(pivec)
    
   return(list(atoms = atoms, probs = probs, f1y = f1y, ll = mean(log(f1y))))
 }
@@ -434,13 +434,13 @@ lregoptim = function(f0y, f1y, x, binit, lambda = 1e-2/length(f0y)){
 
   # defining objective function
   llobj = function(bb, f0y, f1y, x, lambda){
-    pivec = as.vector(1/(1 + exp(-x %*% bb)))
+    pivec = pmax(pmin(as.vector(1/(1 + exp(-x %*% bb))),0.999999),1e-200)
     - mean(log(pivec*f1y + (1-pivec)*f0y)) + sum(lambda*bb^2)
   }
 
   # defining first gradient
   llfirst = function(bb, f0y, f1y, x, lambda){
-    pivec = as.vector(1/(1 + exp(-x %*% bb)))
+    pivec = pmax(pmin(as.vector(1/(1 + exp(-x %*% bb))),0.999999),1e-200)
     wts = (f1y - f0y)/(pivec*f1y + (1-pivec)*f0y) * pivec * (1-pivec)
     - apply(x, 2, function(vec) mean(vec * wts)) + 2*lambda*bb
   }
@@ -544,13 +544,13 @@ lregem = function(weights, x, binit, lambda = 1e-2/length(weights)){
 
   # defining objective function
   llobj = function(bb, weights, x, lambda){
-    pivec = as.vector(1/(1 + exp(-x %*% bb)))
+    pivec = pmax(pmin(as.vector(1/(1 + exp(-x %*% bb))),0.999999),1e-200)
     - mean(weights * log(pivec) + (1-weights) * log(1-pivec)) + sum(lambda*bb^2)
   }
 
   # defining first gradient
   llfirst = function(bb, weights, x, lambda){
-    pivec = as.vector(1/(1 + exp(-x %*% bb)))
+    pivec = pmax(pmin(as.vector(1/(1 + exp(-x %*% bb))),0.999999),1e-200)
     tt = pivec * (1-pivec) * (weights/pivec - (1-weights)/(1-pivec))
     - apply(x, 2, function(vec) mean(vec * tt)) + 2*lambda*bb
   }
@@ -717,13 +717,13 @@ m2boptim = function(y, x, binit, lambda = 1e-2/length(y)){
   # x = cbind(1, x);
   # defining objective function
   lsobj = function(bb, y, x, lambda){
-    pivec = as.vector(1/(1 + exp(-x %*% bb)))
+    pivec = pmax(pmin(as.vector(1/(1 + exp(-x %*% bb))),0.999999),1e-200)
     mean((y - pivec)^2) + lambda*sum(bb^2)
   }
 
   # defining first gradient
   lsfirst = function(bb, y, x, lambda){
-    pivec = as.vector(1/(1 + exp(-x %*% bb)))
+    pivec = pmax(pmin(as.vector(1/(1 + exp(-x %*% bb))),0.999999),1e-200)
     wts = -2 * (y - pivec) * pivec * (1-pivec)
     apply(x, 2, function(vec) mean(vec * wts)) + 2*lambda*bb
   }
@@ -860,7 +860,7 @@ extract_init = function(obj){
 npmleEM <- function(y, x, level = 0.05, initp = 1){
   if(initp == 1)
   {
-    m1n_ = marg1(y, x, level = level)
+    m1n_ = suppressWarnings(marg1(y, x, level = level))
     init_list = list(m1n_ = m1n_)
     init_bi = which.max(sapply(init_list, function (ro) ro$ll))
     init_best = extract_init(init_list[[init_bi]])
@@ -868,7 +868,7 @@ npmleEM <- function(y, x, level = 0.05, initp = 1){
   }
   if(initp == 2)
   {
-    m2n_ = marg2(y, x, level = level)
+    m2n_ = suppressWarnings(marg2(y, x, level = level))
     init_list = list(m2n_ = m2n_)
     init_bi = which.max(sapply(init_list, function (ro) ro$ll))
     init_best = extract_init(init_list[[init_bi]])
@@ -887,15 +887,15 @@ npmleEM <- function(y, x, level = 0.05, initp = 1){
   {
     ff=FDRreg(y,x[,-1])
     f_ = modf(ff)
-    m1n_ = marg1(y, x, level = level)
-    m2n_ = marg2(y, x, level = level)
+    m1n_ = suppressWarnings(marg1(y, x, level = level))
+    m2n_ = suppressWarnings(marg2(y, x, level = level))
     init_list = list(f_ = f_, m1n_ = m1n_, m2n_ = m2n_)
     init_bi = which.max(sapply(init_list, function (ro) ro$ll))
     init_best = extract_init(init_list[[init_bi]])
     init_best_name = names(init_bi)
   }
   # EM starting from here, run at most 500 iterations
-  em_ = lgem(y, x, weights = init_best$w, binit = init_best$b, timed = Inf, maxit = 100, level = level)
+  em_ = suppressWarnings(lgem(y, x, weights = init_best$w, binit = init_best$b, timed = Inf, maxit = 100, level = level))
   em_ = extract_index(em_, length(em_$time_list))
   return(em_)
 }
