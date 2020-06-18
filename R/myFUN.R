@@ -511,16 +511,16 @@ marg1 = function(y, x, blambda = 1e-6/length(y), level = 0.05){
   mt = abs(y) - mean(abs(rnorm(1e4)));
   pi0grid = seq(from = 0.01, to = 0.49, by = 0.01);
   verbose=FALSE;
-  grid_len = max(50, round(sqrt(length(y))));
+  grid_len = max(100, round(sqrt(length(y))));
   n = length(y); f0y = dnorm(y);
-  kwm = kwprimal_weights(y, num_atoms = grid_len);
+  kwm = suppressWarnings(kwprimal_weights(y, num_atoms = grid_len));
   fmy = kwm$f1y;
 
   m1step = function (pt) {
     weights = pmax(pmin(1 - (1-pt)*f0y/fmy, 0.99), 0.01)
     muinit = mean(mt)/pt
     binit = lm(mosaic::logit(pmax(pmin(mt/muinit, 0.9), 0.1)) ~ 0 + x)$coefficients;
-    robj = lgstep(y, x, weights, binit, grid_len, blambda, level)
+    robj = suppressWarnings(lgstep(y, x, weights, binit, grid_len, blambda, level))
     robj$pi0 = pt
     return(robj)
   }
@@ -567,7 +567,7 @@ lregem = function(weights, x, binit, lambda = 1e-2/length(weights)){
 # EM
 lgem = function(y, x,
                 weights, binit,
-                grid_len = 3*max(50, round(sqrt(length(y)))), histFlag = TRUE, timed = 60,
+                grid_len = 3*max(100, round(sqrt(length(y)))), histFlag = TRUE, timed = 60,
                 maxit = 600, tol = 1e-6,
                 blambda = 1e-6/length(y), level){
 
@@ -681,7 +681,7 @@ marg2 = function(y, x, nlslambda = 1e-6/length(y), level = 0.05){
   computefn = function (mu) {
     # this function uses non-linear least squares to solve for beta for a fixed value of mu
     binit = lm(mosaic::logit(pmax(pmin(mt/mu, 0.9), 0.1)) ~ 0 + x)$coefficients
-    nlso = m2boptim(mt/mu, x, binit, nlslambda)
+    nlso = suppressWarnings(m2boptim(mt/mu, x, binit, nlslambda))
     er = mean((mt - mu * nlso$p)^2)
     return(list(nlso = nlso, er = er, mu = mu, pi0 = mean(mt)/mu))
   }
@@ -700,7 +700,7 @@ marg2 = function(y, x, nlslambda = 1e-6/length(y), level = 0.05){
   if(solvef1){
     pi0grid = pi0grid[bi]
     #robj = m1(y, x, pi0grid = pi0grid[bi], mt = mt)
-    robj = newmarg1(y, x, level = level)
+    robj = suppressWarnings(newmarg1(y, x, level = level))
   } else {
     robj = list(pi0grid = pi0grid, mugrid = mugrid,
                 pi0 = pi0grid[bi], mu = mugrid[bi],
@@ -909,7 +909,7 @@ newmarg1 = function(y, x, blambda = 1e-6/length(y), level = 0.05){
   mt = abs(y) - mean(abs(rnorm(1e4)));
   pi0grid = seq(from = 0.01, to = 0.49, by = 0.01);
   verbose=FALSE;
-  grid_len = max(50, round(sqrt(length(y))));
+  grid_len = max(100, round(sqrt(length(y))));
   n = length(y); f0y = dnorm(y);
   kwm = kwprimal_weights(y, num_atoms = grid_len);
   fmy = kwm$f1y;
